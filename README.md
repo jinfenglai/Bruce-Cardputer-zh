@@ -1,5 +1,7 @@
 # Bruce 固件 · M5Stack Cardputer 简体中文版
 
+[![Build Chinese firmware](https://github.com/sunshinexk/Bruce-Cardputer-zh/actions/workflows/build-zh.yml/badge.svg)](https://github.com/sunshinexk/Bruce-Cardputer-zh/actions/workflows/build-zh.yml)
+
 > **本项目是 [BruceDevices/firmware](https://github.com/BruceDevices/firmware) 的第三方简体中文汉化，非官方项目。**
 >
 > 原版 Bruce 固件及其全部功能的版权归 **BruceDevices 与 Bruce 贡献者**所有，遵循 **GPL-3.0**。本仓库只新增中文语言层、内嵌中文字库、少量排版/构建修正和预编译固件；上游英文说明保留在 [`README_upstream.md`](README_upstream.md)。
