@@ -1,0 +1,10 @@
+{
+  "source_font": "NotoSansSC-VF.ttf",
+  "license": "SIL Open Font License 1.1",
+  "charset": "GB2312 + chars used by lang/zh_CN.json",
+  "count": 7445,
+  "sizes": {
+    "12": 12,
+    "16": 16
+  }
+}
