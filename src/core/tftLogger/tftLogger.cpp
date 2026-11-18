@@ -141,9 +141,7 @@ void tft_logger::getTftInfo() {
     writeUint16(buffer, pos, width());
     writeUint16(buffer, pos, height());
     uint8_t rot = 0;
-#if defined(HAS_SCREEN)
     rot = getRotation();
-#endif
     buffer[pos++] = rot;
     buffer[1] = pos;
     tftLog l;
@@ -159,9 +157,7 @@ void tft_logger::getBinLog(uint8_t *outBuffer, size_t &outSize) {
     writeUint16(buffer, pos, width());
     writeUint16(buffer, pos, height());
     uint8_t rot = 0;
-#if defined(HAS_SCREEN)
     rot = getRotation();
-#endif
     buffer[pos++] = rot;
     buffer[1] = pos;
 
@@ -448,7 +444,9 @@ void tft_logger::drawFastHLine(int32_t x, int32_t y, int32_t w, int32_t fg) {
 void tft_logger::log_drawString(String s, tftFuncs fn, int32_t x, int32_t y) {
     if (!logging) return;
     if (!log) return;
-    if (removeLogEntriesInsideRect(x, y, s.length() * LW * currentTextSize(), s.length() * LH * currentTextSize())) {
+    if (removeLogEntriesInsideRect(
+            x, y, s.length() * LW * currentTextSize(), s.length() * LH * currentTextSize()
+        )) {
         // debug purpose
         // Serial.printf("Something was removed while processing: %s\n", s.c_str());
     }
@@ -555,32 +553,9 @@ int16_t tft_logger::drawRightString(const String &string, int32_t x, int32_t y, 
 #endif
 }
 
-int16_t tft_logger::drawString(const char *string, int32_t x, int32_t y) {
-    return drawString(String(string), x, y, 1);
-}
-
-int16_t tft_logger::drawString(const char *string, int32_t x, int32_t y, uint8_t font) {
-    return drawString(String(string), x, y, font);
-}
-
-int16_t tft_logger::drawCentreString(const char *string, int32_t x, int32_t y) {
-    return drawCentreString(String(string), x, y, 1);
-}
-
-int16_t tft_logger::drawCentreString(const char *string, int32_t x, int32_t y, uint8_t font) {
-    return drawCentreString(String(string), x, y, font);
-}
-
-int16_t tft_logger::drawRightString(const char *string, int32_t x, int32_t y) {
-    return drawRightString(String(string), x, y, 1);
-}
-
-int16_t tft_logger::drawRightString(const char *string, int32_t x, int32_t y, uint8_t font) {
-    return drawRightString(String(string), x, y, font);
-}
-
 #if defined(BRUCE_LANG_ZH)
-int16_t tft_logger::textWidth(const String &string) {    return bruceTextWidth(bruceTranslate(string), currentTextSize());
+int16_t tft_logger::textWidth(const String &string) {
+    return bruceTextWidth(bruceTranslate(string), currentTextSize());
 }
 
 int16_t tft_logger::textWidth(const String &string, uint8_t font) {
@@ -605,9 +580,9 @@ void tft_logger::drawLocalizedGlyph(
     int16_t top = y + (8 * size - gh) / 2;
     if (fillbg) fillRect(x, y, gw, 8 * size, bg);
 
-    // Draw the 1bpp glyph pixel by pixel.  This avoids relying on the display
-    // driver's image byte order / DMA path, which differs between TFT_eSPI
-    // builds and produced garbled glyphs on some Cardputer units.
+    // Draw the 1bpp glyph pixel by pixel. The display HAL differs between
+    // boards (TFT_eSPI / M5GFX / Arduino_GFX); this avoids any image byte
+    // order or DMA assumptions and keeps the glyphs stable on every panel.
     for (uint8_t row = 0; row < gh; row++) {
         uint16_t bits = ((uint16_t)bitmap[row * 2] << 8) | bitmap[row * 2 + 1];
         for (uint8_t col = 0; col < gw; col++) {
@@ -661,9 +636,10 @@ int16_t tft_logger::drawLocalizedString(const String &string, int32_t x, int32_t
             continue;
         }
         if (cp < 0x80) {
-            // TFT_eSPI signature is drawChar(x, y, unicode, fg, bg, size).
-            drawChar(cx, cy, cp, fg, bg, size);
-            cx += 6 * size;
+            setCursor(cx, cy);
+            BRUCE_TFT_DRIVER::write((uint8_t)cp);
+            cx = getCursorX();
+            cy = getCursorY();
         } else {
             uint8_t gw = 0, gh = 0;
             const uint8_t *bmp = zhFontGlyph(cp, size, gw, gh);
@@ -728,7 +704,9 @@ void tft_logger::log_print(String s) {
     if (!log) return;
 
     removeLogEntriesInsideRect(
-        getCursorX() - 1, getCursorY() - 1, s.length() * LW * currentTextSize() + 2,
+        getCursorX() - 1,
+        getCursorY() - 1,
+        s.length() * LW * currentTextSize() + 2,
         s.length() * LH * currentTextSize() + 2
     );
 
@@ -805,10 +783,6 @@ size_t tft_logger::println(const String &s) {
     return print(s + "\n");
 #endif
 }
-
-size_t tft_logger::println(const char *s) { return println(String(s)); }
-
-size_t tft_logger::println(const __FlashStringHelper *s) { return println(String(s)); }
 
 size_t tft_logger::println(char c) { return print(String(c) + "\n"); }
 

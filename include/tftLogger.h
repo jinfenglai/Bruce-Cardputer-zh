@@ -1,12 +1,9 @@
 #ifndef __DISPLAY_LOGER
 #define __DISPLAY_LOGER
-#ifdef HAS_SCREEN
-#include <display/tft.h>
+
+#include <DisplayDrivers.h>
 #define BRUCE_TFT_DRIVER tft_display
-#else
-#include <VectorDisplay.h>
-#define BRUCE_TFT_DRIVER SerialDisplayClass
-#endif
+
 enum tftFuncs : uint8_t { // DO NOT CHANGE THE ORDER, ADD NEW FUNCTIONS TO THE END!!!
     FILLSCREEN,           // 0
     DRAWRECT,             // 1
@@ -64,27 +61,9 @@ private:
     TaskHandle_t asyncSerialTask = NULL;
     QueueHandle_t asyncSerialQueue = NULL;
     static void asyncSerialTaskFunc(void *pv);
-    inline uint8_t currentTextSize() const {
-#if defined(HAS_SCREEN)
-        return getTextSize();
-#else
-        return textsize;
-#endif
-    }
-    inline uint16_t currentTextColor() const {
-#if defined(HAS_SCREEN)
-        return getTextColor();
-#else
-        return textcolor;
-#endif
-    }
-    inline uint16_t currentTextBgColor() const {
-#if defined(HAS_SCREEN)
-        return getTextBgColor();
-#else
-        return textbgcolor;
-#endif
-    }
+    inline uint8_t currentTextSize() const { return getTextSize(); }
+    inline uint16_t currentTextColor() const { return getTextColor(); }
+    inline uint16_t currentTextBgColor() const { return getTextBgColor(); }
 
 #if defined(BRUCE_LANG_ZH)
     size_t printLocalized(const String &s);
@@ -137,14 +116,8 @@ public:
     void drawFastHLine(int32_t x, int32_t y, int32_t w, int32_t fg);
     void log_drawString(String s, tftFuncs fn, int32_t x, int32_t y);
     int16_t drawString(const String &string, int32_t x, int32_t y, uint8_t font = 1);
-    int16_t drawString(const char *string, int32_t x, int32_t y);
-    int16_t drawString(const char *string, int32_t x, int32_t y, uint8_t font);
     int16_t drawCentreString(const String &string, int32_t x, int32_t y, uint8_t font = 1);
-    int16_t drawCentreString(const char *string, int32_t x, int32_t y);
-    int16_t drawCentreString(const char *string, int32_t x, int32_t y, uint8_t font);
     int16_t drawRightString(const String &string, int32_t x, int32_t y, uint8_t font = 1);
-    int16_t drawRightString(const char *string, int32_t x, int32_t y);
-    int16_t drawRightString(const char *string, int32_t x, int32_t y, uint8_t font);
 #if defined(BRUCE_LANG_ZH)
     int16_t textWidth(const String &string);
     int16_t textWidth(const String &string, uint8_t font);
@@ -158,8 +131,6 @@ public:
     size_t print(const char *s);
     size_t print(const __FlashStringHelper *s);
     size_t println(const String &s);
-    size_t println(const char *s);
-    size_t println(const __FlashStringHelper *s);
     size_t println(void);
 
     size_t println(char c);

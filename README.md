@@ -29,14 +29,14 @@
 
 ## 版本
 
-- 固件版本号：`1.16.1-zh`
-- 基于上游 `firmware-main`（2026-10 快照）
+- 固件版本号：`1.17-zh`
+- 基于上游 `firmware-main`（Bruce 1.17，2026-11）
 - 目标设备：**M5Stack Cardputer**（ESP32-S3，8MB Flash）
 - 分区表：`custom_8Mb.csv`（应用分区 0x4E0000，约 5.1MB）
 
 ## 直接刷入
 
-预编译固件：[`releases/Bruce-m5stack-cardputer-1.16.1-zh.bin`](releases/Bruce-m5stack-cardputer-1.16.1-zh.bin)（合并后的完整镜像，从 `0x0` 写入）。
+预编译固件：[`releases/Bruce-m5stack-cardputer-1.17-zh.bin`](releases/Bruce-m5stack-cardputer-1.17-zh.bin)（合并后的完整镜像，从 `0x0` 写入）。
 
 - 大小：`4,626,656` 字节
 - SHA256：`5ca6ad97787ca0106d6b9fa4cba907c3eee110baeb97a334705f5b619037ece2`（也可查看 [`releases/SHA256SUMS.txt`](releases/SHA256SUMS.txt)）
@@ -44,17 +44,17 @@
 ### 方法一：esptool
 
 ```bash
-esptool.py --chip esp32s3 --port COM3 write_flash 0x0 Bruce-m5stack-cardputer-1.16.1-zh.bin
+esptool.py --chip esp32s3 --port COM3 write_flash 0x0 Bruce-m5stack-cardputer-1.17-zh.bin
 ```
 
 Windows 下把 `COM3` 换成实际串口。刷机前请备份原固件。
 
 ### 方法二：M5Burner / M5Launcher
 
-1. 用 M5Burner 选择 Cardputer，将本仓库的 `Bruce-m5stack-cardputer-1.16.1-zh.bin` 作为自定义固件烧录；
+1. 用 M5Burner 选择 Cardputer，将本仓库的 `Bruce-m5stack-cardputer-1.17-zh.bin` 作为自定义固件烧录；
 2. 或把 `.bin` 放到 SD 卡，用设备上的 M5Launcher 从 SD 卡安装。
 
-首次启动如显示英文，请进入 `设置 → 关于` 确认版本为 `1.16.1-zh`；若仍是旧固件，请检查是否写入了 `0x0` 而不是 `0x10000`。
+首次启动如显示英文，请进入 `设置 → 关于` 确认版本为 `1.17-zh`；若仍是旧固件，请检查是否写入了 `0x0` 而不是 `0x10000`。
 
 ## 从源码构建
 
