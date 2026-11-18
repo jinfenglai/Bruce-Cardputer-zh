@@ -38,8 +38,8 @@
 
 预编译固件：[`releases/Bruce-m5stack-cardputer-1.17-zh.bin`](releases/Bruce-m5stack-cardputer-1.17-zh.bin)（合并后的完整镜像，从 `0x0` 写入）。
 
-- 大小：`4,626,656` 字节
-- SHA256：`5ca6ad97787ca0106d6b9fa4cba907c3eee110baeb97a334705f5b619037ece2`（也可查看 [`releases/SHA256SUMS.txt`](releases/SHA256SUMS.txt)）
+- 大小：`5,007,376` 字节
+- SHA256：`6eea3be2518fcaea17900695961ce90d4d549cb914f5321cdafd9986255037b1`（也可查看 [`releases/SHA256SUMS.txt`](releases/SHA256SUMS.txt)）
 
 ### 方法一：esptool
 
