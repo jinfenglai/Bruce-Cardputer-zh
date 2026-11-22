@@ -20,7 +20,7 @@ class EvilPortal {
 
 public:
     EvilPortal(
-        String tssid = "", uint8_t channel = 6, bool deauth = false, bool verifyPwd = false,
+        String tssid = "", uint8_t channel = 1, bool deauth = false, bool verifyPwd = false,
         bool autoMode = false, bool backgroundMode = false, String templateFile = ""
     );
     ~EvilPortal();
